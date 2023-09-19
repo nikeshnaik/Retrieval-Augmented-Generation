@@ -10,7 +10,9 @@
 
 ### Todo
 
-- [ ] System Design of how data will flow.
+- [x] System Design of how data will flow.
+- [x] Use Gutenberg Project book and cleanup for demo
+- [x] buy openai credits for MVP
 - [ ] Find right VectorDB
 - [ ] use simple text file with content for v1
 
@@ -22,3 +24,8 @@
 - Embeddings from LLM extraction
 - search and doing similarity search
 - Frontend for search experience + chatbot design.
+
+
+
+### System Design
+![Alt text](design.png)
