@@ -1,6 +1,7 @@
 import openai
 import os
 import re
+from vectordb import init_vector_db, test_search_vector_db, test_vector_db
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 context_length = 8000
@@ -18,28 +19,35 @@ def read_file(datafile):
     return dataset
 
 
-# embeddings = get_embedding("Hello world")
+def get_main_content(dataset):
+    # Use regular expressions to find the start and end of the metadata section
+    metadata_match = re.search(
+        r"\*\*\* START OF (THIS|THE) PROJECT GUTENBERG EBOOK", dataset
+    )
+    license_match = re.search(
+        r"\*\*\* END OF (THIS|THE) PROJECT GUTENBERG EBOOK", dataset
+    )
 
-dataset = read_file(datafile)
+    if metadata_match and license_match:
+        metadata_end = metadata_match.end()
+        license_start = license_match.start()
+        metadata_section = dataset[:metadata_end]
+        license_section = dataset[license_start:]
+    else:
+        print("Metadata or license not found in the text.")
 
-# Use regular expressions to find the start and end of the metadata section
-metadata_match = re.search(
-    r"\*\*\* START OF (THIS|THE) PROJECT GUTENBERG EBOOK", dataset
-)
-license_match = re.search(r"\*\*\* END OF (THIS|THE) PROJECT GUTENBERG EBOOK", dataset)
+    # Print the main content without metadata and headers
+    if metadata_section and license_section:
+        main_content = dataset[len(metadata_section) :].strip()
+        main_content = main_content[: len(license_section)].strip()
+        print(main_content)
+    else:
+        print("No metadata or license found")
 
-if metadata_match and license_match:
-    metadata_end = metadata_match.end()
-    license_start = license_match.start()
-    metadata_section = dataset[:metadata_end]
-    license_section = dataset[license_start:]
-else:
-    print("Metadata or license not found in the text.")
 
-# Print the main content without metadata and headers
-if metadata_section and license_section:
-    main_content = dataset[len(metadata_section) :].strip()
-    main_content = main_content[: len(license_section)].strip()
-    print(main_content)
-else:
-    print("No metadata or license found")
+if __name__ == "__main__":
+    dataset = read_file(datafile)
+    main_content = get_main_content(dataset)
+    init_vector_db()
+
+    # embeddings = get_embedding("Hello world")
