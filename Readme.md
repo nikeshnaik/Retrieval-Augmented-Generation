@@ -12,7 +12,8 @@
 - [x] Use Gutenberg Project book and cleanup for demo
 - [x] buy openai credits for MVP
 - [x] Find right VectorDB, settled with Qdrant
-- [ ] Use simple text file with content for v1
+- [x] Use simple text file with content for v1
+- [ ] Dump openAI embeddings of text file to vectorDB.
 
 ### Learning Goals
 

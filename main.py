@@ -1,11 +1,12 @@
 import openai
 import os
 import re
-from vectordb import init_vector_db, test_search_vector_db, test_vector_db
+from vectordb import create_vectordb_collection, upsert_collection
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 context_length = 8000
 datafile = "METAMORPHOSIS.txt"
+collection_name = "metamorphosis"
 
 
 def get_embedding(text, model="text-embedding-ada-002"):
@@ -44,10 +45,22 @@ def get_main_content(dataset):
     else:
         print("No metadata or license found")
 
+    return main_content
+
 
 if __name__ == "__main__":
     dataset = read_file(datafile)
     main_content = get_main_content(dataset)
-    init_vector_db()
-
-    # embeddings = get_embedding("Hello world")
+    create_vectordb_collection(collection_name, size=1536)
+    # print(len(embeddings))
+    paragraphs = main_content.split("\n\n")
+    for idx, each in enumerate(paragraphs):
+        if len(each.split()) < 5:
+            continue
+        embedding = get_embedding(each)
+        upsert_collection(
+            id=idx,
+            collection_name=collection_name,
+            embedding=embedding,
+            payload={"Paragraph" + str(idx): each},
+        )
