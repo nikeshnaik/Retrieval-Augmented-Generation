@@ -52,7 +52,6 @@ if __name__ == "__main__":
     dataset = read_file(datafile)
     main_content = get_main_content(dataset)
     create_vectordb_collection(collection_name, size=1536)
-    # print(len(embeddings))
     paragraphs = main_content.split("\n\n")
     for idx, each in enumerate(paragraphs):
         if len(each.split()) < 5:
@@ -62,5 +61,7 @@ if __name__ == "__main__":
             id=idx,
             collection_name=collection_name,
             embedding=embedding,
-            payload={"Paragraph" + str(idx): each},
+            payload={"paragraph_" + str(idx): each},
         )
+
+    query = "who shouted the middle gentleman to Gregor’s father"

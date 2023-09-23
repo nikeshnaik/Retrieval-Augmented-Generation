@@ -12,8 +12,12 @@
 - [x] Use Gutenberg Project book and cleanup for demo
 - [x] buy openai credits for MVP
 - [x] Find right VectorDB, settled with Qdrant
-- [x] Use simple text file with content for v1
-- [ ] Dump openAI embeddings of text file to vectorDB.
+- [x] Use simple text file with content for v1, move to Squad v2 dataset
+- [x] Dump openAI embeddings of text file to vectorDB.
+- [ ] Take question for text file from Args
+- [ ] Sort and get top 3 Chunks based on similarity scores
+- [ ] Use each chunk, fire 3 APIs calls with question and get answer.
+
 
 ### Learning Goals
 

@@ -1,5 +1,5 @@
-from config import vector_db_client, vector_db_collection
-from qdrant_client.http.models import Distance, VectorParams, PointStruct, Batch
+from config import vector_db_client
+from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
 
 def create_vectordb_collection(collection_name, size):
@@ -10,7 +10,7 @@ def create_vectordb_collection(collection_name, size):
 
 
 def upsert_collection(id, collection_name, embedding, payload):
-    response = vector_db_client.upsert(
+    vector_db_client.upsert(
         collection_name=collection_name,
         wait=True,
         points=[PointStruct(id=id, vector=embedding, payload=payload)],
